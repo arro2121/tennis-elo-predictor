@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS predictions (
   away_probability REAL NOT NULL,
   predicted_home_score REAL,
   predicted_away_score REAL,
-  model_version TEXT NOT NULL DEFAULT 'elo-v1',
+  model_version TEXT NOT NULL DEFAULT 'elo-v2',
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_participants_sport ON participants(sport_id);
@@ -72,12 +72,12 @@ const addSport = db.prepare('INSERT OR IGNORE INTO sports(key,name,kind,supports
 for (const sport of sports) addSport.run(...sport);
 
 const seed = {
-  tennis: ['Novak Djokovic', 'Carlos Alcaraz', 'Jannik Sinner', 'Iga Swiatek', 'Aryna Sabalenka', 'Coco Gauff'],
-  nfl: ['Kansas City Chiefs', 'Buffalo Bills', 'Baltimore Ravens', 'San Francisco 49ers', 'Philadelphia Eagles', 'Dallas Cowboys'],
-  nhl: ['Boston Bruins', 'Colorado Avalanche', 'Edmonton Oilers', 'New York Rangers', 'Florida Panthers', 'Toronto Maple Leafs'],
-  mlb: ['Los Angeles Dodgers', 'New York Yankees', 'Atlanta Braves', 'Houston Astros', 'Baltimore Orioles', 'Chicago Cubs'],
-  nba: ['Boston Celtics', 'Denver Nuggets', 'Oklahoma City Thunder', 'Milwaukee Bucks', 'Los Angeles Lakers', 'Golden State Warriors'],
-  'premier-league': ['Arsenal', 'Liverpool', 'Manchester City', 'Chelsea', 'Manchester United', 'Tottenham Hotspur']
+  tennis: ['Novak Djokovic', 'Carlos Alcaraz', 'Jannik Sinner', 'Iga Swiatek', 'Aryna Sabalenka', 'Coco Gauff', 'Daniil Medvedev', 'Taylor Fritz', 'Jasmine Paolini', 'Elena Rybakina'],
+  nfl: ['Kansas City Chiefs', 'Buffalo Bills', 'Baltimore Ravens', 'San Francisco 49ers', 'Philadelphia Eagles', 'Dallas Cowboys', 'Detroit Lions', 'Cincinnati Bengals'],
+  nhl: ['Boston Bruins', 'Colorado Avalanche', 'Edmonton Oilers', 'New York Rangers', 'Florida Panthers', 'Toronto Maple Leafs', 'Carolina Hurricanes', 'Vegas Golden Knights'],
+  mlb: ['Los Angeles Dodgers', 'New York Yankees', 'Atlanta Braves', 'Houston Astros', 'Baltimore Orioles', 'Chicago Cubs', 'Texas Rangers', 'Philadelphia Phillies'],
+  nba: ['Boston Celtics', 'Denver Nuggets', 'Oklahoma City Thunder', 'Milwaukee Bucks', 'Los Angeles Lakers', 'Golden State Warriors', 'New York Knicks', 'Dallas Mavericks'],
+  'premier-league': ['Arsenal', 'Liverpool', 'Manchester City', 'Chelsea', 'Manchester United', 'Tottenham Hotspur', 'Newcastle United', 'Aston Villa']
 };
 const findSport = db.prepare('SELECT id FROM sports WHERE key = ?');
 const addParticipant = db.prepare('INSERT OR IGNORE INTO participants(sport_id,name,short_name) VALUES (?,?,?)');
