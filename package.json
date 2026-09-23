@@ -1,9 +1,17 @@
 {
-  "name": "multi-sport-elo-predictor",
-  "version": "3.0.0",
+  "name": "edgeplay-sports",
+  "version": "4.0.0",
   "private": true,
-  "description": "Vibrant multi-sport Elo analytics with live team and tennis ranking refresh.",
+  "description": "Publishable multi-sport fan experience with tennis Elo, team form predictions, live ESPN scores, and play-by-play.",
   "main": "server.js",
-  "scripts": {"start":"node server.js","dev":"node --watch server.js","sync":"node -e \"require('./sync-data').syncAll().then(console.log)\""},
-  "dependencies": {"better-sqlite3":"^11.7.0","express":"^4.21.2"}
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "sync": "node -e \"require('./sync-data').syncAll().then(console.log)\""
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "express": "^4.21.2"
+  }
 }

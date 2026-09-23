@@ -1,28 +1,14 @@
 # EdgePlay Sports Lab
 
-A publishable sports-fan app for matchup analysis, live scores, ESPN play-by-play, and lightweight interactive games.
+EdgePlay is a bright, responsive sports-fan experience for matchup analysis, live scores, ESPN play-by-play, and quick interactive games.
 
-## Features
+## Models
 
-- Light, responsive sports-dashboard UI
-- Tennis predictions use Elo only
-- NFL, NBA, NHL, MLB, and Premier League use a separate transparent form baseline
-- ESPN live-score feed with selectable league
-- ESPN play-by-play feed with sport-specific animated event classes
-- ATP/WTA ranking and team roster refresh through the existing sync job
-- Browser-based arcade score stored locally
-- Health endpoint for Render
+- **Tennis:** Elo probability model only.
+- **NFL, NBA, NHL, MLB, Premier League:** transparent team form/power baseline, not Elo.
+- **Odds:** theoretical fair odds generated from model probabilities; not sportsbook odds.
 
-## Deploy to Render
-
-The repository includes `render.yaml`. In Render, create a new Blueprint and select this repository, or create a Web Service with:
-
-- Build command: `npm install`
-- Start command: `npm start`
-- Health check: `/api/health`
-- Environment variable: `SYNC_INTERVAL_MINUTES=30`
-
-## Local development
+## Run locally
 
 ```bash
 npm install
@@ -31,27 +17,21 @@ npm start
 
 Open `http://localhost:3000`.
 
-## Data and model notes
+## Render deployment
 
-ESPN endpoints used here are public feeds and may change or rate-limit access. Cache and request behavior should be reviewed before heavy public traffic. Fair odds are mathematical model outputs and are not sportsbook odds. The app does not provide gambling advice.
+The repository includes `render.yaml`. You can deploy it as a Blueprint, or configure a Node Web Service with:
 
-The free Render filesystem is ephemeral. SQLite is suitable for a demo, but production persistence requires a managed PostgreSQL database or a persistent disk.
+- Build command: `npm install`
+- Start command: `npm start`
+- Health check path: `/api/health`
+- `SYNC_INTERVAL_MINUTES=30`
 
-## API
+## Public data
 
-- `GET /api/health`
-- `GET /api/sports`
-- `GET /api/participants?sport=nba`
-- `GET /api/scores?sport=nba`
-- `GET /api/play-by-play?sport=nba&event=EVENT_ID`
-- `POST /api/predict`
+The app uses public ESPN feeds for scores and play-by-play and public ATP/WTA/team sources for roster synchronization. These feeds can change or rate-limit requests; the app uses short server-side caching for score endpoints. Review the provider's terms before operating at scale.
 
-Example prediction request:
+## Production notes
 
-```json
-{
-  "sport": "tennis",
-  "home": "Novak Djokovic",
-  "away": "Carlos Alcaraz"
-}
-```
+The free Render filesystem is ephemeral. SQLite is convenient for a demo, but persistent public use should move ratings, predictions, and user data to managed PostgreSQL. Add authentication, a real reverse-proxy rate limiter, monitoring, and provider-approved data access before commercial launch.
+
+Predictions are informational estimates, not guarantees or gambling advice.
