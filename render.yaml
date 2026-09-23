@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: edgeplay-sports
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SYNC_INTERVAL_MINUTES
+        value: '30'

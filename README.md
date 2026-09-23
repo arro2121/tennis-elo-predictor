@@ -1,48 +1,57 @@
-# Multi-Sport Elo Predictor
+# EdgePlay Sports Lab
 
-A real SQLite-backed web app for Elo predictions across:
+A publishable sports-fan app for matchup analysis, live scores, ESPN play-by-play, and lightweight interactive games.
 
-- Tennis
-- NFL
-- NHL
-- MLB
-- NBA
-- Premier League
+## Features
 
-## Run locally
+- Light, responsive sports-dashboard UI
+- Tennis predictions use Elo only
+- NFL, NBA, NHL, MLB, and Premier League use a separate transparent form baseline
+- ESPN live-score feed with selectable league
+- ESPN play-by-play feed with sport-specific animated event classes
+- ATP/WTA ranking and team roster refresh through the existing sync job
+- Browser-based arcade score stored locally
+- Health endpoint for Render
 
-Requirements: Node.js 18+
+## Deploy to Render
+
+The repository includes `render.yaml`. In Render, create a new Blueprint and select this repository, or create a Web Service with:
+
+- Build command: `npm install`
+- Start command: `npm start`
+- Health check: `/api/health`
+- Environment variable: `SYNC_INTERVAL_MINUTES=30`
+
+## Local development
 
 ```bash
 npm install
 npm start
 ```
 
-Open http://localhost:3000. The database is created automatically at `data/predictions.sqlite` and is intentionally ignored by Git.
+Open `http://localhost:3000`.
 
-## What is included
+## Data and model notes
 
-- SQLite schema for sports, participants, ratings, matches, and predictions
-- Seed participants for all six sports
-- Generic Elo rating engine with sport-specific K factors
-- Home advantage for team sports
-- Draw probabilities for NHL and Premier League
-- Saved predictions and match results
-- Responsive browser UI
-- REST API
+ESPN endpoints used here are public feeds and may change or rate-limit access. Cache and request behavior should be reviewed before heavy public traffic. Fair odds are mathematical model outputs and are not sportsbook odds. The app does not provide gambling advice.
 
-## API examples
+The free Render filesystem is ephemeral. SQLite is suitable for a demo, but production persistence requires a managed PostgreSQL database or a persistent disk.
 
-```bash
-curl http://localhost:3000/api/sports
-curl 'http://localhost:3000/api/participants?sport=nba'
-curl -X POST http://localhost:3000/api/predict \
-  -H 'content-type: application/json' \
-  -d '{"sport":"tennis","home":"Novak Djokovic","away":"Carlos Alcaraz"}'
+## API
+
+- `GET /api/health`
+- `GET /api/sports`
+- `GET /api/participants?sport=nba`
+- `GET /api/scores?sport=nba`
+- `GET /api/play-by-play?sport=nba&event=EVENT_ID`
+- `POST /api/predict`
+
+Example prediction request:
+
+```json
+{
+  "sport": "tennis",
+  "home": "Novak Djokovic",
+  "away": "Carlos Alcaraz"
+}
 ```
-
-To add real data, load provider data into the `participants` and `matches` tables, then call the prediction endpoint before a match and `/api/matches/:id/result` after it finishes. Do not claim predictions are guaranteed; add provider licensing, authentication, validation, and rate limiting before production use.
-
-## Elo notes
-
-The initial seed ratings are 1500 because they are demo participants, not official ratings. Replace them with historical ratings/results or import match history and replay it chronologically to create meaningful ratings. Random train/test splitting should not be used for sports time series.
