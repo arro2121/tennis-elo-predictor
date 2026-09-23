@@ -1,15 +1,9 @@
 {
   "name": "multi-sport-elo-predictor",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Database-backed Elo predictions for tennis, NFL, NHL, MLB, NBA, and Premier League football.",
+  "description": "Vibrant multi-sport Elo analytics with live team and tennis ranking refresh.",
   "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
-  },
-  "dependencies": {
-    "better-sqlite3": "^11.7.0",
-    "express": "^4.21.2"
-  }
+  "scripts": {"start":"node server.js","dev":"node --watch server.js","sync":"node -e \"require('./sync-data').syncAll().then(console.log)\""},
+  "dependencies": {"better-sqlite3":"^11.7.0","express":"^4.21.2"}
 }
