@@ -1,0 +1,11 @@
+const $ = id => document.getElementById(id);
+let sports = [];
+async function get(url, options) { const r = await fetch(url, options); const data = await r.json(); if (!r.ok) throw new Error(data.error || 'Request failed'); return data; }
+function pct(x) { return `${(x * 100).toFixed(1)}%`; }
+async function loadSports() { sports = await get('/api/sports'); $('sport').innerHTML = sports.map(s => `<option value="${s.key}">${s.name}</option>`).join(''); await loadSport(); }
+async function loadSport() { const key = $('sport').value; const people = await get(`/api/participants?sport=${encodeURIComponent(key)}`); const opts = people.map(p => `<option value="${p.name}">${p.name} (${Math.round(p.rating)})</option>`).join(''); $('home').innerHTML = opts; $('away').innerHTML = opts; if (people[1]) $('away').selectedIndex = 1; await Promise.all([loadLeaderboard(), loadMatches()]); }
+async function loadLeaderboard() { const data = await get(`/api/leaderboard?sport=${encodeURIComponent($('sport').value)}`); $('leaderboard').innerHTML = data.participants.map((p,i) => `<div class="row"><span>#${i+1} ${p.name}</span><strong>${Math.round(p.rating)}</strong></div>`).join(''); }
+async function loadMatches() { const matches = await get(`/api/matches?sport=${encodeURIComponent($('sport').value)}`); $('matches').innerHTML = matches.length ? matches.slice(0,10).map(m => `<div class="row"><span>${m.home.name} vs ${m.away.name}</span><small>${m.status}</small></div>`).join('') : '<p class="muted">No saved predictions yet.</p>'; }
+$('sport').addEventListener('change', loadSport);
+$('predict').addEventListener('click', async () => { const box=$('prediction'); box.textContent='Calculating…'; try { const d=await get('/api/predict',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sport:$('sport').value,home:$('home').value,away:$('away').value})}); box.innerHTML=`<h2>${d.home} vs ${d.away}</h2><div class="prob"><b>${pct(d.probabilities.home)}</b><span>Home win</span><b>${pct(d.probabilities.draw)}</b><span>Draw</span><b>${pct(d.probabilities.away)}</b><span>Away win</span></div><p>Ratings: ${Math.round(d.ratings.home)} – ${Math.round(d.ratings.away)} · ${d.model}</p>`; await loadMatches(); } catch(e) { box.textContent=e.message; } });
+loadSports().catch(e => { $('prediction').textContent=e.message; });
