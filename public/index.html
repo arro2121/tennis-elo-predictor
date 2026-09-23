@@ -1,110 +1,15 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>EdgePlay — Sports Intelligence</title>
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <div class="glow glow-a"></div>
-    <div class="glow glow-b"></div>
-
-    <main>
-      <nav>
-        <div class="brand">
-          <span class="brand-mark">E</span>
-          <span>EdgePlay</span>
-        </div>
-        <span class="live-pill"><i></i> MODEL ONLINE</span>
-      </nav>
-
-      <header class="hero">
-        <p class="eyebrow">SPORTS INTELLIGENCE PLATFORM</p>
-        <h1>Find the edge<br /><em>before kickoff.</em></h1>
-        <p class="subtitle">
-          Compare any two players or teams with transparent Elo ratings, matchup metrics,
-          and fair-market odds.
-        </p>
-      </header>
-
-      <section class="panel builder">
-        <div class="panel-head">
-          <div>
-            <span class="eyebrow">MATCHUP LAB</span>
-            <h2>Build your matchup</h2>
-          </div>
-          <span class="model-tag">ELO v2 · LIVE</span>
-        </div>
-
-        <div class="controls">
-          <label>
-            SPORT
-            <select id="sport"></select>
-          </label>
-
-          <label>
-            PLAYER / TEAM A
-            <input id="home" list="home-options" placeholder="e.g. Novak Djokovic" autocomplete="off" />
-            <datalist id="home-options"></datalist>
-          </label>
-
-          <button class="swap" id="swap" type="button" aria-label="Swap competitors">⇄</button>
-
-          <label>
-            PLAYER / TEAM B
-            <input id="away" list="away-options" placeholder="e.g. Carlos Alcaraz" autocomplete="off" />
-            <datalist id="away-options"></datalist>
-          </label>
-        </div>
-
-        <button id="predict" class="primary" type="button">
-          <span>Run matchup analysis</span>
-          <b>→</b>
-        </button>
-
-        <p class="hint">You can enter any player or team. New entries start at a neutral Elo of 1500.</p>
-      </section>
-
-      <section id="empty" class="empty">
-        <div class="empty-icon">✦</div>
-        <h2>Your matchup, visualized</h2>
-        <p>
-          Select a sport and enter two competitors to see win probability, fair odds,
-          and comparative stats.
-        </p>
-      </section>
-
-      <section id="results" class="results hidden"></section>
-
-      <div class="columns">
-        <section class="panel leaderboard-panel">
-          <div class="panel-head">
-            <div>
-              <span class="eyebrow">RATINGS</span>
-              <h2>Top of the board</h2>
-            </div>
-            <select class="small-select" id="board-sport"></select>
-          </div>
-          <div id="leaderboard"></div>
-        </section>
-
-        <section class="panel history-panel">
-          <div class="panel-head">
-            <div>
-              <span class="eyebrow">HISTORY</span>
-              <h2>Recent analyses</h2>
-            </div>
-          </div>
-          <div id="matches"></div>
-        </section>
-      </div>
-
-      <footer>
-        Predictions are model estimates, not guarantees. Odds shown are theoretical fair odds and do not include bookmaker margin.
-      </footer>
-    </main>
-
-    <script src="/app.js"></script>
-  </body>
-</html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10182e"><title>EdgePlay — Sports Intelligence</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<main>
+  <nav><a class="brand" href="#top"><span class="brand-mark">E</span><span>EdgePlay</span></a><div class="nav-links"><a href="#analyze">Analyze</a><a href="#scores">Live scores</a><a href="#rankings">Rankings</a></div><span class="live-pill"><i></i> LIVE DATA</span></nav>
+  <header class="hero" id="top"><p class="eyebrow">SPORTS INTELLIGENCE · MADE FUN</p><h1>Make your call.<br><em>Own the edge.</em></h1><p class="subtitle">A fast, colorful matchup lab for tennis, NFL, NHL, MLB, NBA, and Premier League fans.</p><div class="hero-actions"><a class="primary small" href="#analyze">Start analyzing <b>→</b></a><a class="ghost" href="#scores">See live scores</a></div></header>
+  <section class="ticker"><span><i></i> LIVE CENTER</span><b>Fresh scores and team data refresh automatically</b><small id="last-updated">Connecting…</small></section>
+  <section class="panel builder" id="analyze"><div class="panel-head"><div><span class="eyebrow">MATCHUP LAB</span><h2>Who wins?</h2></div><span class="model-tag">Tennis uses Elo · other sports use form</span></div><div class="controls"><label>SPORT<select id="sport"></select></label><label>PLAYER / TEAM A<input id="home" list="home-options" placeholder="Choose or type a competitor" autocomplete="off"><datalist id="home-options"></datalist></label><button class="swap" id="swap" type="button">⇄</button><label>PLAYER / TEAM B<input id="away" list="away-options" placeholder="Choose or type a competitor" autocomplete="off"><datalist id="away-options"></datalist></label></div><button id="predict" class="primary" type="button"><span>Run matchup analysis</span><b>→</b></button><p class="hint">New names start with neutral information. Tennis predictions use Elo only; team predictions use a transparent form baseline.</p></section>
+  <section id="empty" class="empty"><div class="empty-icon">✦</div><h2>Your next hot take starts here</h2><p>Pick any two competitors, run the model, and compare the numbers. No jargon. Just the edge.</p></section>
+  <section id="results" class="results hidden"></section>
+  <section class="panel scores-panel" id="scores"><div class="section-heading"><div><span class="eyebrow">LIVE CENTER</span><h2>Scores right now</h2><p>Automatically refreshed from public sports feeds.</p></div><div class="score-controls"><select id="score-sport"></select><button id="refresh-scores" class="ghost-button">↻ Refresh</button></div></div><div id="scores-grid" class="scores-grid"><div class="loading-card">Loading live scores…</div></div></section>
+  <div class="columns" id="rankings"><section class="panel"><div class="panel-head"><div><span class="eyebrow">RATINGS</span><h2>Top of the board</h2></div><select class="small-select" id="board-sport"></select></div><div id="leaderboard"></div></section><section class="panel"><div class="panel-head"><div><span class="eyebrow">HISTORY</span><h2>Recent analyses</h2></div></div><div id="matches"></div></section></div>
+  <footer>Predictions are estimates, not guarantees. The app does not provide or endorse gambling advice. Live data availability depends on the public feed.</footer>
+</main><script src="/app.js"></script></body></html>
